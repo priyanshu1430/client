@@ -19,7 +19,7 @@ const PostWidget = ({
   postUserId,
   name,
   description,
-  location,
+  college,
   picturePath,
   userPicturePath,
   likes,
@@ -29,9 +29,8 @@ const PostWidget = ({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
-  const likeCount = Object.keys(likes).length;
-
+  const isLiked = Boolean(likes && likes[loggedInUserId]);
+  const likeCount = likes ? Object.keys(likes).length : 0;
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
@@ -54,7 +53,7 @@ const PostWidget = ({
       <Friend
         friendId={postUserId}
         name={name}
-        subtitle={location}
+        subtitle={college}
         userPicturePath={userPicturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
@@ -66,7 +65,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={picturePath}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -86,7 +85,8 @@ const PostWidget = ({
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
+            <Typography>{comments ? comments.length : 0}</Typography>
+
           </FlexBetween>
         </FlexBetween>
 
